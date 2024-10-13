@@ -71,9 +71,9 @@ def result(board, action):
 
     # Check move is valid:
     if i not in [0, 1, 2] or j not in [0, 1, 2]:
-      raise InvalidActionError(action, board, 'Result function given an invalid board position for action: ')
+      raise ValueError(action, board, 'Result function given an invalid board position for action: ')
     elif board[i][j] != EMPTY:
-      raise InvalidActionError(action, board, 'Result function tried to perform invalid action on occupaied tile: ')
+      raise ValueError(action, board, 'Result function tried to perform invalid action on occupaied tile: ')
 
     # Make a deep copy of the board and update with the current player's move:
     board_copy = deepcopy(board)
@@ -83,24 +83,45 @@ def result(board, action):
 
 
 def winner(board):
-    """
-    Returns the winner of the game, if there is one.
-    otherwise return None
-    """
-    #  TO BE IMPLEMENTED
-    raise NotImplementedError
+  """
+  Returns the winner of the game, if there is one.
+  otherwise return None
+  """
+  # Check rows:
+  for row in board:
+    if row == [X, X, X]:
+      return X
+    elif row == [O, O, O]:
+      return O    
 
-    # Check rows:
+  # Check columns:
+  if board[0][0] == O and board[1][0] == O and board[2][0] == O:
+    return O
+  elif board[0][1] == O and board[1][1] == O and board[2][1] == O:
+    return O
+  elif board[0][2] == O and board[1][2] == O and board[2][2] == O:
+    return O
+  
+  if board[0][0] == X and board[1][0] == X and board[2][0] == X:
+    return X
+  elif board[0][1] == X and board[1][1] == X and board[2][1] == X:
+    return X
+  elif board[0][2] == X and board[1][2] == X and board[2][2] == X:
+    return X
 
+  # Check Diagonals:
+  if board[0][0] == O and board[1][1] == O and board[2][2] == O:
+    return O
+  elif board[0][2] == O and board[1][1] == O and board[2][0] == O:
+    return O
+  
+  if board[0][0] == X and board[1][1] == X and board[2][2] == X:
+    return X
+  elif board[0][2] == X and board[1][1] == X and board[2][0] == X:
+    return X
 
-    # Check columns:
-
-
-    # Check Diagonals:
-
-
-    # Otherwise no current winner, return None
-
+  # Otherwise no current winner, return None
+  return None
 
 
 def terminal(board):
