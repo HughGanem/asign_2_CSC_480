@@ -55,7 +55,7 @@ def actions(board):
     
     for rows_idx in range(len(board)):
        for column_idx in range(len(board[rows_idx])):
-          if board[rows_idx][column_idx] is EMPTY:
+          if board[rows_idx][column_idx] == EMPTY:
              possible_moves.add((rows_idx, column_idx))
     return possible_moves
 
@@ -152,11 +152,38 @@ actions_explored = 0
 
 
 def minimax(board):
-    """
-    Returns the optimal action for the current player on the board.
-    'X' Player is trying to maximise the score, 'O' Player is trying to minimise it
-    """
+  """
+  Returns the optimal action for the current player on the board.
+  'X' Player is trying to maximise the score, 'O' Player is trying to minimise it
+  """
+  return minimax_helper(board)[1]
 
-    #  TO BE IMPLEMENTED
-    raise NotImplementedError
+def minimax_helper(board):
+    """
+    Recursive helper function to find the optimal action.
+    """
+    # Base case: if the game is over, return the utility value and no action.
+    if terminal(board):
+        return utility(board), None
 
+    # Maximize for X
+    if player(board) == X:
+        best_value = -math.inf
+        best_action = None
+        for action in actions(board):
+            ret_value, _ = minimax_helper(result(board, action))
+            if ret_value > best_value:
+                best_value = ret_value
+                best_action = action
+        return best_value, best_action
+
+    # Minimize for O
+    else:
+        best_value = math.inf
+        best_action = None
+        for action in actions(board):
+            ret_value, _ = minimax_helper(result(board, action))
+            if ret_value < best_value:
+                best_value = ret_value
+                best_action = action
+        return best_value, best_action
